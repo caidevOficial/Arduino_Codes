@@ -13,7 +13,7 @@
   <tr>
     <td>
       <center>
-        <img alt="Factory Logo" src="Media/Velocimetro.png" height="250px" /></center>
+        <img alt="Circuit Design" src="Media/Velocimetro.png" height="250px" /></center>
     </td>
   </tr>
 </table></br>
@@ -31,13 +31,10 @@
 
 ---
 
-```C#
-public static string ShowNewSkill() {
-	StringBuilder message = new StringBuilder();
-	message.AppendLine("Learning C#");
-	message.AppendLine("the best i can!");
-	
-	return message.ToString();
+```C++
+void showNewSkill() {
+	Serial.println("Learning Arduino");
+	Serial.println("the best i can!");
 }
 ```
 ---
