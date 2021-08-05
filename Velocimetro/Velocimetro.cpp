@@ -1,25 +1,33 @@
 /*
- * 1 - Al inicar el programa, el velocímetro debe estar en 0 con el cambio 0 
- *    y una velocidad maxima de 0.
- * 2 - Al subir un cambio, pulsando su boton correspondiente, la velocidad maxima incrementa en 30, 
- *    con lo que la velocidad empieza a aumentar por la aceleracion.
- * 3 - Al disminuirlo, pulsando su boton correspondiente, la velocidad maxima decrementa en 30. 
- *    Mientras la velocidad máxima sea menor que la velocidad actual, la velocidad debe disminuir.
- * 4 - Respecto a la velocidad actual:
- *  A - Si la velocidad actual supera el 70% de la velocidad máxima, se debe encender el led verde. 
- *  B - Si supera el 80% debe encenderse el amarillo. 
- *  C - Si supera el 90% debe encenderse el rojo. 
- *  NOTA: Los cambios solo pueden pasarse cuando el led rojo esta encendido, caso contrario no debera dejarte
- *        por mas que se presione el boton para subir cambios.
- *  5 - El servo debe iniciar completamente del lado izquierdo y moverse gradualmente a la derecha a medida 
- *    que la velocidad aumenta o viceversa.
-*/
+ * MIT License
+ * 
+ * Copyright (c) 2021 [FacuFalcone]
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include <Servo.h>
 
 Servo needle;
 #define SERVO 9
 
-//BOTONES
+//BUTTONS
 #define NOBOTON 0
 #define GEARBOX_UP 1
 #define GEARBOX_DOWN 2
@@ -30,14 +38,14 @@ Servo needle;
 #define LED_Y 11
 #define LED_G 12
 
-int millisBefore = 0; // para controlar el parpadeo del LED
+int millisBefore = 0; // To control the led's blink
 int flagButton = NOBOTON; // Antirebote
 int gear = 0;
-int flagGear = 0; // Para saber si se puede o no pasar un cambio
+int flagGear = 0; // to know if i can change the gear.
 int actualSpeed = 0;
 int maximunSpeed[7] = {0, 30, 60, 90, 120, 150, 180};
-int acceleration = 1; // Este valor se suma o resta a la velocidad actual
-// lEDS DEL DISPLAY REFERIDO A LOS CAMBIOS DEL AUTO
+int acceleration = 1; // this value could be added or subtracted to the actual speed.
+// DISPLAY LEDS -> CAR'S GEARS
 int carGearBox[7][7] = {
   //A     B     C     D     E     F     G
   {HIGH ,HIGH ,HIGH ,HIGH ,HIGH ,HIGH ,LOW},  // 0
@@ -86,7 +94,7 @@ void loop(){
   delay(50);
 }
 
-// LECTURA BOTONES
+// READ BUTTONS
 /**
  * @brief  Reads the button that is pressed in the tension divisor.
  * @note   
@@ -159,7 +167,7 @@ void shutdownLeds(){
   }
 }
 
-// CAMBIOS
+// GEARS
 /**
  * @brief  Increase or decrease the current gear and 
  * show the new gear on the display.
@@ -188,7 +196,7 @@ void gearBoxControl(int button){
   showGearBox(gear);
 }
 
-// VELOCIDAD
+// SPEED
 /**
  * @brief  Regarding the actual gear, it will increase 
  * or decrease the actual speed.
