@@ -23,8 +23,8 @@
 
 ```C++
 void showNewSkill() {
-	Serial.println("Learning Arduino");
-	Serial.println("the best i can!");
+  Serial.println("Learning Arduino");
+  Serial.println("the best i can!");
 }
 ```
 ---
