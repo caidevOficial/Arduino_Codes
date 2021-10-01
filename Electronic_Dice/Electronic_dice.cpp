@@ -22,22 +22,15 @@
  * SOFTWARE.
  */
 
+//--- Defines ---//
 #define btnRandom 2
 #define btnUp 4
 #define btnDown 3
 #define ROWS 7
 #define COLUMNS 7
+//--- End Defines ---//
 
-/**
- * @brief This function is the main function of the program.
- * @note Used for configure the pins and the buttons.
- */
-void setup() {
-    Serial.begin(9600);
-    setInputs();
-    setOutputs();
-}
-
+//--- Variables ---//
 int arduDice = 0;
 int btnRandomBefore = LOW;
 int btnUpBefore = LOW;
@@ -52,8 +45,21 @@ int diceMAtrix[ROWS][COLUMNS] = {/*Pins:
     {HIGH, LOW,  HIGH, HIGH, HIGH, LOW,  HIGH}, // Dice: 5
     {HIGH, HIGH, HIGH, LOW,  HIGH, HIGH, HIGH}  // Dice: 6
 };
+//--- End Variables ---//
 
+//--- Setup ---//
+/**
+ * @brief This function is the main function of the program.
+ * @note Used for configure the pins and the buttons.
+ */
+void setup() {
+    Serial.begin(9600);
+    setInputs();
+    setOutputs();
+}
+//--- End Setup ---//
 
+//--- Inputs & Outputs ---//
 /**
  * @brief  Sets the inputs of the board
  * @note   The inputs are: 2 to 4
@@ -73,6 +79,26 @@ void setOutputs() {
         pinMode(i, OUTPUT);
     }
 }
+//--- End Inputs & Outputs ---//
+
+//--- Random Numbers ---//
+/**
+ * @brief  This will prints a random number between 1 and 6 in a specific
+ *         period of time.
+ * @param  period: The period of time in milliseconds to print every number.
+ * @param  arduDice: The dice number to print.
+ */
+void printRandomUsingMillis(int period, int arduDice) {
+    int randomTemporal;
+    int contador=0;
+    int millisBefore=0;
+    unsigned long millisActual=millis();
+    
+    if((millisActual-millisBefore) >= period){
+      	millisBefore=millisActual;
+  		showNumber(arduDice);
+    }
+}
 
 /**
  * @brief This will show a number of the dice randomly between 1 and 6.
@@ -84,11 +110,14 @@ void randomDice(int min, int max) {
     for(int i = 0; i < random(min,max); i++) {
             arduDice = random(1, 7); // 1.00000000001 --- 6.99999999999
             Serial.println(arduDice);
-            showNumber(arduDice);
+            printRandomUsingMillis(300, arduDice);
+            //showNumber(arduDice);
             delay(500);
         }
 }
+//--- End Random Numbers ---//
 
+//--- Buttons ---//
 /**
  * @brief Reads the button 'random' and shows the dice number.
  * @note  The button 'random' is the pin 2.
@@ -139,24 +168,9 @@ int readBtnDown(int btnDownNow, int btnDownBefore) {
 
     return btnDownNow;
 }
+//--- End Buttons ---//
 
-/**
- * @brief Main loop function of the program.
- * @note The loop function is called every time the program is executed.
- */
-void loop()
-{
-    int btnRandomNow = digitalRead(btnRandom);
-    int btnUpNow = digitalRead(btnUp);
-    int btnDownNow = digitalRead(btnDown);
-
-    btnRandomBefore = readBtnRandom(btnRandomNow, btnRandomBefore);
-    btnUpBefore = readBtnUp(btnUpNow, btnUpBefore);
-    btnDownBefore = readBtnDown(btnDownNow, btnDownBefore);
-
-    delay(25); // unique delay of the program.
-}
-
+//--- Show Dice Number ---//
 /**
  * @brief Shows the dice number on the LEDs.
  * @note The LEDs are the pins 5 to 11.
@@ -167,3 +181,22 @@ void showNumber(int diceValue) {
         digitalWrite(i+5, diceMAtrix[diceValue][i]);
     }
 }
+//--- End Show Dice Number ---//
+
+//--- Main ---//
+/**
+ * @brief Main loop function of the program.
+ * @note The loop function is called every time the program is executed.
+ */
+void loop(){
+    int btnRandomNow = digitalRead(btnRandom);
+    int btnUpNow = digitalRead(btnUp);
+    int btnDownNow = digitalRead(btnDown);
+
+    btnRandomBefore = readBtnRandom(btnRandomNow, btnRandomBefore);
+    btnUpBefore = readBtnUp(btnUpNow, btnUpBefore);
+    btnDownBefore = readBtnDown(btnDownNow, btnDownBefore);
+
+    delay(25); // unique delay of the program.
+}
+//--- End Main ---//
