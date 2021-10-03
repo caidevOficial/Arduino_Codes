@@ -109,9 +109,8 @@ void printRandomUsingMillis(int period, int arduDice) {
 void randomDice(int min, int max) {
     for(int i = 0; i < random(min,max); i++) {
             arduDice = random(1, 7); // 1.00000000001 --- 6.99999999999
-            Serial.println(arduDice);
             printRandomUsingMillis(300, arduDice);
-            //showNumber(arduDice);
+            
             delay(500);
         }
 }
@@ -140,12 +139,10 @@ int readBtnRandom(int btnRandomNow, int btnRandomBefore) {
  */
 int readBtnUp(int btnUpNow, int btnUpBefore) {
     if (btnUpNow == HIGH && btnUpBefore == LOW) {
-        arduDice++;
-        if (arduDice > 6) {
-            arduDice = 1;
+        if (arduDice < 6) {
+            arduDice++;
+            showNumber(arduDice);
         }
-        Serial.println(arduDice);
-        showNumber(arduDice);
     }
 
     return btnUpNow;
@@ -158,12 +155,10 @@ int readBtnUp(int btnUpNow, int btnUpBefore) {
  */
 int readBtnDown(int btnDownNow, int btnDownBefore) {
     if (btnDownNow == HIGH && btnDownBefore == LOW) {
-        arduDice--;
-        if (arduDice < 1) {
-            arduDice = 6;
+        if (arduDice > 1) {
+            arduDice--;
+            showNumber(arduDice);
         }
-        Serial.println(arduDice);
-        showNumber(arduDice);
     }
 
     return btnDownNow;
@@ -177,11 +172,25 @@ int readBtnDown(int btnDownNow, int btnDownBefore) {
  * @param  diceValue: The dice number to be shown.
  */
 void showNumber(int diceValue) {
+    printMessage(arduDice);
     for(int i = 0; i < 8; i++) {
         digitalWrite(i+5, diceMAtrix[diceValue][i]);
     }
 }
 //--- End Show Dice Number ---//
+
+//--- Messages ---//
+/**
+ * @brief Prints a message on the serial port with the dice number.
+ * @param  number: The dice number to be shown.
+ */
+void printMessage(int number){
+    Serial.println("------");
+    Serial.print("Dice Number: ");
+    Serial.println(number);
+    Serial.println("------");
+}
+//--- End Messages ---//
 
 //--- Main ---//
 /**
