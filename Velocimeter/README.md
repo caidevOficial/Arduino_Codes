@@ -12,7 +12,7 @@
   <th><center>Circuit Design</center></th>
   <tr align='center'>
     <td>
-        <img alt="Circuit Design" src="Media/Velocimetro.png" height="250px" />
+        <img alt="Circuit Design" src="./Velocimeter.Media/Velocimeter.Media.Image.png" height="250px" />
     </td>
   </tr>
 </table></br>
