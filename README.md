@@ -17,7 +17,11 @@
 </p>
 
 # Arduino Codes! 
-## [01 - Link To Velocimeter's Code](https://github.com/caidevOficial/Arduino_Codes/tree/main/Velocimetro)
+## [01 - Link To Velocimeter's Code](https://github.com/caidevOficial/Arduino_Codes/tree/main/Velocimeter)
+
+## [02 - Link To Binary Chronometer's Code](https://github.com/caidevOficial/Arduino_Codes/tree/main/Binary_Chrono)
+
+## [03 - Link To Electronic Dice's Code](https://github.com/caidevOficial/Arduino_Codes/tree/main/Electronic_Dice)
 
 <br>
 <details>
