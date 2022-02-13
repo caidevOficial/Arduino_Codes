@@ -40,9 +40,9 @@
  *   
  *	-------------------------------------------------------
  *   
- *	Al presionarse el boton, debe detenerse el cronometro.
- *	Volver a presionarlo hace que la secuencia continue.
- *	De mantenerse el boton pulsado por 3 segundos, el cronometro
+ *	Al presionarse el boton, debe detenerse el cronometro. //! DONE
+ *	Volver a presionarlo hace que la secuencia continue. (Como si se hubiese presionado pausa) //! STILL NOT
+ *	De mantenerse el boton pulsado por 3 segundos, el cronometro //! STILL NOT
  *	debe reiniciarse.
  *
  *	Tip: Modularizar la función que controla el encendido de los 
@@ -50,27 +50,29 @@
  *	controlar el tiempo del contador para que el cambio de los 
  *	leds encendidos sea perceptible para el ojo humano y 
  *	documentar cada función creada en el código. 
- *	(Un breve comentario que diga que es lo que hace esa función).
+ *	(Un breve comentario que diga que es lo que hace esa función y de corresponder, que retorna).
  *   
 */
 
 //--- Defines ---//
-#define ZERO_TO_HERO 0
+#define ZERO_TO_HERO 0 //! Comment this line to use the below version
+//#define ZERO_TO_HERO 2040 //! To check a value near the max limit of the leds.
 #define SIZE 12
 #define BUTTON_PIN 2
 #define FIRST_LED 3
 #define LAST_LED 13
 #define SECONDS 1000
+#define MAX_SECONDS 2047
 //--- End Defines ---//
 
 //--- Variables ---//
-int secondsCounter = ZERO_TO_HERO;
+unsigned long long secondsCounter = ZERO_TO_HERO;
 int buttonBeforeState = LOW;
 int buttonNowState;
 int initialized = 0;
 int binaryString[SIZE];
-int mainMillisBefore = 0;
-unsigned long mainCurrentMillis;
+unsigned long long mainMillisBefore = 0;
+unsigned long long mainCurrentMillis;
 //--- End Variables ---//
 
 //--- Setup ---//
@@ -117,9 +119,10 @@ void ShowBinaryString(int* binaryString) {
  * @retval Every second calculated.
  */
 int calculateSeconds(int secondsCounter, int secondsUnitTime) {
-    unsigned long currentMillis = millis();
-    int millisBefore = 0;
-    if(currentMillis > millisBefore+secondsUnitTime){
+    unsigned long long currentMillis = millis();
+    unsigned long long  millisBefore = 0;
+    unsigned long long timeSum = millisBefore+secondsUnitTime;
+    if(currentMillis > timeSum){
       	millisBefore=currentMillis;
   		secondsCounter++;
     }
@@ -176,27 +179,33 @@ void printMessage(int seconds, int* binaryString) {
 //--- End Serial Port Messages ---//
 
 void loop() {
-    // Controlar el boton
+    // Control the button.
     buttonNowState = digitalRead(BUTTON_PIN);
     if(buttonNowState == HIGH && buttonBeforeState == LOW) {
       initialized = !initialized;
     }
     buttonBeforeState = buttonNowState;
-    
-    if(!initialized){
-        // If the button is pressed, the counter stops
+    //? if isn't initialized or the secondsCounter is bigger than the max seconds
+    //* then the secondsCounter will be reset to 0 and the leds will be shut down.
+    if(!initialized || secondsCounter > MAX_SECONDS) {
         secondsCounter = ZERO_TO_HERO;
         shutDownLeds();
     }else{
-        // If the button is pressed, the counter starts
-        if(millis() > mainMillisBefore+SECONDS){
+        //* If the button is pressed, the counter starts
+        if(millis() > (mainMillisBefore+SECONDS)){
             mainMillisBefore = millis();
             secondsCounter = calculateSeconds(secondsCounter, SECONDS);
-            decimalToBinary(secondsCounter , binaryString);
-            ShowBinaryString(binaryString);
-            printMessage(secondsCounter, binaryString);
+            //? if the secondsCounter are smaller than the max seconds then
+            //* - the binary number will be calculated
+            //* - the binary string will be shown with the leds
+            //* - the message will be printed
+            if(secondsCounter <= MAX_SECONDS) {
+                decimalToBinary(secondsCounter , binaryString);
+                ShowBinaryString(binaryString);
+                printMessage(secondsCounter, binaryString);
+            }
         }
     }
 
-    delay(25);
+    delay(7);
 }
