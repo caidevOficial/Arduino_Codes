@@ -2,7 +2,7 @@
   <tr align='center'>
     <td>
       <a href="https://github.com/caidevOficial/Arduino_Codes/" target="_blank" />
-      <img alt="Universidad Tecnológica Nacional" src="https://github.com/caidevOficial/Logos/blob/master/Instituciones/logo-utn_black_white.png?raw=true" height="150px" />
+      <img alt="Universidad Tecnológica Nacional" src="https://github.com/caidevOficial/Logos/blob/master/Personales/Personal_Logo_Gif.gif?raw=true" height="150px" />
     </td>
     <td>
       <img align="center" alt="Arduino" src="https://camo.githubusercontent.com/b3a1cdd20d0f308634ddd4598cdaa729c2d77047f51e66fa7206b9b4bac94c23/68747470733a2f2f63646e2e776f726c64766563746f726c6f676f2e636f6d2f6c6f676f732f61726475696e6f2d312e737667" width="150px" height="150px" />
