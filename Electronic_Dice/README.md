@@ -1,14 +1,43 @@
 <table>
-  <tr>
-  <td><a href="https://github.com/caidevOficial/Arduino_Codes/" target="_blank"><img alt="Universidad Tecnológica Nacional" src="https://github.com/caidevOficial/Logos/blob/master/Instituciones/logo-utn_black_white.png?raw=true" height="150px" /></td>
-  <td><img align="center" alt="Arduino" src="https://camo.githubusercontent.com/b3a1cdd20d0f308634ddd4598cdaa729c2d77047f51e66fa7206b9b4bac94c23/68747470733a2f2f63646e2e776f726c64766563746f726c6f676f2e636f6d2f6c6f676f732f61726475696e6f2d312e737667" width="150px" height="150px" /></td>
-  </tr>
+    <tr>
+        <td align='center'>
+            <img alt="Logo UTN" src="https://www.utnfravirtual.org.ar/pluginfile.php/1/theme_moove/logo/1657209741/logo_top.png?raw=true" height="145px" />
+        </td>
+    </tr>
+    <tr>
+      <td align='center'>
+            <img alt="Universidad Tecnológica Nacional" src="https://github.com/caidevOficial/Logos/raw/master/Personales/Personal_Logo_Gif.gif?raw=true" height="150px" />
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <img align="center" alt="Arduino" src="https://camo.githubusercontent.com/b3a1cdd20d0f308634ddd4598cdaa729c2d77047f51e66fa7206b9b4bac94c23/68747470733a2f2f63646e2e776f726c64766563746f726c6f676f2e636f6d2f6c6f676f732f61726475696e6f2d312e737667" width="150px" height="150px" />
+        </td>
+    </tr>
 </table></br>
 
-# Electronic Dice Arduino! 
-## [Link to circuit](https://www.tinkercad.com/things/ccEeeo8GlNL)
+</br>
 
-<table>
+![](https://hit.yhype.me/github/profile?user_id=12877139)
+
+<p align="center">
+    <img src="https://komarev.com/ghpvc/?username=caidevoficial&label=Profile%20views&color=0e75b6&style=plastic" alt="caidevoficial" />
+</p>
+
+<p align="center">
+    <a href="https://github.com/CaidevOficial">
+        <img src="https://github-profile-trophy.vercel.app/?username=caidevoficial&theme=nord&column=7" alt="caidevoficial" />
+    </a>
+</p>
+<br><br><br>
+
+---
+
+
+# Electronic Dice Arduino! 
+## [Link to circuit](https://www.tinkercad.com/things/6w3A2oZf0c5)
+
+<table align='center'>
   <th><center>Circuit Design</center></th>
   <tr align='center'>
     <td>
@@ -51,14 +80,14 @@ This project is under license \[MIT License\] - read the file [LICENSE.md](LICEN
 
 ## Where to find me: 🌎
 
-<table>
+<table align='center'>
   <theader>
     <tr align='center'>
       <td>
         <img class="circular" alt="Facu" src="https://avatars1.githubusercontent.com/u/12877139?s=400&u=d369ee24466653d9bbeeb9654930e3ff1c67b76a&v=4" width="80px" height="80px" />
       </td>
     </tr>
-    <th><center>🤴 Facu Falcone - Junior Developer</center></th>
+    <th><center>🤴 Facu Falcone - Data Engineer</center></th>
     </theader>
     <tbody>
     <tr align='center'>

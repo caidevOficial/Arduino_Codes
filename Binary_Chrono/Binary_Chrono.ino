@@ -23,7 +23,7 @@
  */
 
 /*
- *	Mini Proyecto 1: Cronómetro Binario
+ *	Trabajo Práctico 1: Cronómetro Binario
  *
  *	Al iniciar la simulacion, todos los led deben comenzar apagados.
  *	Cada 1 segundo que transcurra, se deben encender los led
@@ -31,45 +31,51 @@
  *
  *	Ejemplo:
  *   
- *	El numero 127 (00001111111) se representaria encendiendo los 
- *	leds AMARILLO, NARANJA y ROJO
- *	Al pasar al numero 128 (00010000000), se deben apagar todos 
+ *	El numero 15 (0000001111) se representaria encendiendo los 
+ *	leds AMARILLO y NARANJA.
+ *	Al pasar al numero 16 (0000010000), se deben apagar todos 
  *	los led anteriores y encenderse uno de los leds VERDES. 
  *	Notese, en el ejemplo los 0 representan los led apagados 
  *	y los 1 los led encendidos). 
  *   
  *	-------------------------------------------------------
  *   
- *	Al presionarse el boton, debe detenerse el cronometro. //! DONE
- *	Volver a presionarlo hace que la secuencia continue. (Como si se hubiese presionado pausa) //! STILL NOT
- *	De mantenerse el boton pulsado por 3 segundos, el cronometro //! STILL NOT
- *	debe reiniciarse.
+ *	Al presionarse el boton START, debe iniciar el cronometro.
+ *	Volver a presionarlo hace que la secuencia se detenga. 
+ *  (Como si se hubiese presionado pausa).
+ *	Al presionarse el boton RESET, el cronometro
+ *	debe reiniciarse y arrancar de 0.
  *
  *	Tip: Modularizar la función que controla el encendido de los 
- *	LEDS y de ser posible, todo el código. Usar millis para 
- *	controlar el tiempo del contador para que el cambio de los 
+ *	LEDS y de ser posible, todo el código para evitar repetir lineas lo mas posible.
+ *  Usar millis para controlar el tiempo del contador para que el cambio de los 
  *	leds encendidos sea perceptible para el ojo humano y 
  *	documentar cada función creada en el código. 
- *	(Un breve comentario que diga que es lo que hace esa función y de corresponder, que retorna).
+ *	(Un breve comentario que diga que es lo que hace esa función
+ *  y de corresponder, que retorna).
  *   
 */
 
 //--- Defines ---//
 #define ZERO_TO_HERO 0 //! Comment this line to use the below version
-//#define ZERO_TO_HERO 2040 //! To check a value near the max limit of the leds.
-#define SIZE 12
-#define BUTTON_PIN 2
-#define FIRST_LED 3
+//#define ZERO_TO_HERO 1015 //! To check a value near the max limit of the leds.
+#define SIZE 11
+#define BUTTON_START 2
+#define BUTTON_RESET 3
+#define FIRST_LED 4
 #define LAST_LED 13
-#define SECONDS 1000
-#define MAX_SECONDS 2047
+#define BASE_MILLI_SECONDS 1000
+#define MAX_SECONDS 1023
 //--- End Defines ---//
 
 //--- Variables ---//
 unsigned long long secondsCounter = ZERO_TO_HERO;
-int buttonBeforeState = LOW;
-int buttonNowState;
-int initialized = 0;
+int buttonBeforeStart = LOW;
+int buttonNowStart;
+int buttonBeforeReset = LOW;
+int buttonNowReset;
+int reset = 0;
+int paused = 1;
 int binaryString[SIZE];
 unsigned long long mainMillisBefore = 0;
 unsigned long long mainCurrentMillis;
@@ -79,12 +85,21 @@ unsigned long long mainCurrentMillis;
 void setup() {
     Serial.begin(9600);
     // Inicializar el cronometro
-    for (int i = 3; i < 14; i++) {
-        pinMode(i, OUTPUT);
-    }
-    pinMode(BUTTON_PIN, INPUT);
+  	setPins(FIRST_LED, LAST_LED, OUTPUT);
+    setPins(2, 3, INPUT);
 }
 //--- End Setup ---//
+
+/**
+ * @brief Function that setup the mode of the pins.
+ * @note  This function is used to setup the mode of the pins
+ *        from 'minPin' to 'maxPin' in the mode 'mode'[INPUT or OUTPUT].
+ */
+void setPins(int minPin, int maxPin, int mode){
+	for (int i = minPin; i <= maxPin; i++) {
+        pinMode(i, mode);
+    }
+}
 
 //--- Leds Handling ---//
 /**
@@ -180,30 +195,36 @@ void printMessage(int seconds, int* binaryString) {
 
 void loop() {
     // Control the button.
-    buttonNowState = digitalRead(BUTTON_PIN);
-    if(buttonNowState == HIGH && buttonBeforeState == LOW) {
-      initialized = !initialized;
+    buttonNowStart = digitalRead(BUTTON_START);
+    buttonNowReset = digitalRead(BUTTON_RESET);
+    
+    if(buttonNowStart == HIGH && buttonBeforeStart == LOW) {
+      paused = !paused;
     }
-    buttonBeforeState = buttonNowState;
+    buttonBeforeStart = buttonNowStart;
+    
+    if(buttonNowReset == HIGH && buttonBeforeReset == LOW) {
+      reset = !reset;
+    }
+    buttonBeforeReset = buttonNowReset;
+    
     //? if isn't initialized or the secondsCounter is bigger than the max seconds
     //* then the secondsCounter will be reset to 0 and the leds will be shut down.
-    if(!initialized || secondsCounter > MAX_SECONDS) {
+    if(reset || secondsCounter > MAX_SECONDS) {
         secondsCounter = ZERO_TO_HERO;
-        shutDownLeds();
-    }else{
-        //* If the button is pressed, the counter starts
-        if(millis() > (mainMillisBefore+SECONDS)){
-            mainMillisBefore = millis();
-            secondsCounter = calculateSeconds(secondsCounter, SECONDS);
-            //? if the secondsCounter are smaller than the max seconds then
-            //* - the binary number will be calculated
-            //* - the binary string will be shown with the leds
-            //* - the message will be printed
-            if(secondsCounter <= MAX_SECONDS) {
-                decimalToBinary(secondsCounter , binaryString);
-                ShowBinaryString(binaryString);
-                printMessage(secondsCounter, binaryString);
-            }
+        shutDownLeds(); //? shutdown all the leds to proceed with the reset process.
+        reset = !reset; //* Update the value of the reset variable.
+    }else if(!paused && millis() > (mainMillisBefore+BASE_MILLI_SECONDS)){
+        mainMillisBefore = millis();
+        secondsCounter = calculateSeconds(secondsCounter, BASE_MILLI_SECONDS);
+        //? if the secondsCounter are smaller than the max seconds then
+        //* - the binary number will be calculated
+        //* - the binary string will be shown with the leds
+        //* - the message will be printed
+        if(secondsCounter <= MAX_SECONDS) {
+            decimalToBinary(secondsCounter , binaryString);
+            ShowBinaryString(binaryString);
+            printMessage(secondsCounter, binaryString);
         }
     }
 
